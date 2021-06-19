@@ -14,6 +14,7 @@ for t in range(T):
     n_book = int(input())
     l_book = deque(map(int,input().split()))
     count = 0
+    start = 0
     
     while good(l_book, n_book):
         count += 1
