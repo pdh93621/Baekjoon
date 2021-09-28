@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void inflate(char (*stars)[2200] , int num){
+void inflate(char (*stars)[90] , int num){
     int temp = num / 3;
     for(int i = 0; i < num; i++){
         for(int j = 0; j < num; j++){
@@ -19,7 +19,7 @@ void inflate(char (*stars)[2200] , int num){
 int main(){
     int N;
     cin >> N;
-    char stars[2200][2200];
+    char stars[90][90];
     char star = '*';
     stars[0][0] = star;
 
