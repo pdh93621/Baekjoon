@@ -1,8 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <cmath>
 
 using namespace std;
+
+int square(pair<int, int> A, pair<int, int> B){
+    return pow(A.first - B.first, 2) + pow(A.second - B.second, 2);
+}
+
+int solution(vector<pair<int, int>> coords, int N){
+    int result = 0;
+
+    return result;
+}
 
 int main(){
     int N;
@@ -14,7 +25,7 @@ int main(){
         cin >> coords[i].second;
     }
 
-    cout << coords[0].first << coords[0].second << endl;
+    cout << solution(coords, N) << endl;
 
     return 0;
 }
