@@ -3,21 +3,19 @@
 using namespace std;
 
 int N, M;
-int sol[9];
+int sol[8]; 
 
 void dfs(int m){
     if(m == 0){
-        for(int i = 1; i <= M; i++){
+        for(int i = 0; i < M; i++){
             cout << sol[i] << " ";
         }
         cout << "\n";
-        return;
     }
-
-    for(int i = 1; i <= N; i++){
-        if(sol[M - m] < i){
-            sol[M - m + 1] = i;
-            dfs(m - 1);
+    else{
+        for(int i = 1; i <= N; i++){
+        sol[M - m] = i;
+        dfs(m - 1);
         }
     }
 }
@@ -25,8 +23,6 @@ void dfs(int m){
 int main(){
 
     cin >> N >> M;
-    sol[0] = 0;
-
     dfs(M);
 
     return 0;
