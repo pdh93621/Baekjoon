@@ -12,7 +12,7 @@ void dfs(int m){
         for(int i = 0; i < M; i++){
             cout << temp[i] << ' ';
         }
-        cout << endl;
+        cout << "\n";
     }
     else{
         for(int i = 1; i <= N; i++){
