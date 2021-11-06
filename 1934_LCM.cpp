@@ -23,7 +23,5 @@ int main(){
         cout << A / GCD(min(A, B), max(A, B)) * B << "\n";
     }
     
-    
-
     return 0;
 }
