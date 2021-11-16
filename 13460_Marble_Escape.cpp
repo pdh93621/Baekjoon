@@ -9,15 +9,7 @@ char board[10][10];
 int red_x, red_y, blue_x, blue_y;
 int goal_x, goal_y;
 
-void situation(){
-    for(int i = 0; i < N; i++){
-        for(int j = 0; j < M; j++){
-            cout << board[i][j] << " ";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
-}
+int result = 1001;
 
 void move_left(){
     int n = 0;
@@ -152,9 +144,31 @@ void move_down(){
 
 }
 
-int main(){
+void shake(int dir){
+    if(dir == 0){
+        move_left();
+    }
+    else if(dir == 1){
+        move_up();
+    }
+    else if(dir == 2){
+        move_down();
+    }
+    else if(dir == 3){
+        move_right();
+    }
+}
 
+
+
+int main(){
+    char dirs[4] = {'L', 'U', 'D', 'R'};
     cin >> N >> M;
+
+    int org_rx;
+    int org_ry;
+    int org_bx;
+    int org_by;
 
     for(int i = 0; i < N; i++){
         string temp;
@@ -164,17 +178,28 @@ int main(){
             if(temp[j] == 'R'){
                 red_x = i;
                 red_y = j;
+                org_rx = i;
+                org_ry = j;
             }
             else if(temp[j] == 'B'){
                 blue_x = i;
                 blue_y = j;
+                org_bx = i;
+                org_by = j;
             }
             else if(temp[j] == 'O'){
                 goal_x = i;
                 goal_y = j;
+                temp[j] = '.';
             }
         }
     }
+
+
+
+    if(result > 10) result = -1;
+
+    cout << result << endl;
     
     return 0;
 }

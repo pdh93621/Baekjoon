@@ -2,8 +2,13 @@
 using namespace std; 
 
 int main(){
+    int k;
+    cin >> k;
 
-    cout << (int)abs(10 - 11) << endl;
+    if(k);
+    else{
+        cout << "gogo" << endl;
+    }
 
     return 0;
 }
