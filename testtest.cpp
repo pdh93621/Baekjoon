@@ -3,12 +3,9 @@ using namespace std;
 
 int main(){
     int k;
-    cin >> k;
+    k = 0;
 
-    if(k);
-    else{
-        cout << "gogo" << endl;
-    }
+    cout << ++k % 4 << endl;
 
     return 0;
 }
