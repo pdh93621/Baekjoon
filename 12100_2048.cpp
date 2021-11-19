@@ -5,10 +5,15 @@
 using namespace std;
 
 int board[20][20];
+int temp_board[20][20];
+int original[20][20];
 int N;
 
 int x_dir[4] = {-1, 0, 0, 1};
 int y_dir[4] = {0, -1, 1, 0};
+
+int result = 0;
+int directions[5];
 
 void look_board(){
     for(int i = 0; i < N; i++){
@@ -18,6 +23,44 @@ void look_board(){
         cout << "\n";
     }
     cout << "\n";
+}
+
+void reset(){
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            board[i][j] = original[i][j];
+        }
+    }
+}
+
+void copyboard(){
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            temp_board[i][j] = board[i][j];
+        }
+    }
+}
+
+bool no_change(){
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            if(board[i][j] != temp_board[i][j]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void find_max(){
+    int temp = 0;
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            temp = max(temp, board[i][j]);
+        }
+    }
+    result = max(temp, result);
+    //look_board();
 }
 
 void move(int dir){
@@ -70,18 +113,45 @@ void move(int dir){
             }
         }
     }
-    look_board();
+    //look_board();
+}
+
+void dfs(int n){
+    if(n == 5){
+        reset();
+        for(auto dir: directions){
+            copyboard();
+            move(dir);
+            if(no_change()) return;
+        }
+        find_max();
+        return;
+    }
+
+    for(int i = 0; i < 4; i++){
+        directions[n] = i;
+        dfs(n + 1);
+    }
 }
 
 int main(){
 
     cin >> N;
+    int t;
 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            cin >> board[i][j];
+            cin >> t;
+            board[i][j] = t;
+            original[i][j] = t;
         }
     }
+
+    dfs(0);
+    reset();
+    find_max();
+
+    cout << result << endl;
     
     return 0;
 }
