@@ -34,19 +34,11 @@ bool second_line(int num, int d, int x, int y, int n){
     return true;
 }
 
-void look_obj(){
-    for(int i = 0; i < 4; i++){
-        cout << "(" << mapx[i] << "," << mapy[i] << ")" << " ";
-    }
-    cout << "\n";
-}
-
 int get_score(){
     int score = 0;
     for(int i = 0; i < 4; i++){
         score += map[mapx[i]][mapy[i]];
     }
-    //look_obj();
     return score;
 }
 
