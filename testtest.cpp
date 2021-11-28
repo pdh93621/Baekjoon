@@ -1,10 +1,12 @@
 #include <iostream> 
 #include <queue>
+#include <cmath>
 
 using namespace std; 
 
 int main(){
-    int k[4] = {0, 1, 2, 3};
+    
+    cout << pow(-1, 0) << endl;
 
     return 0;
 }
