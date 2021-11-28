@@ -75,7 +75,6 @@ void rotate(pair<int, int> face, int rot){
         cube[f_num][1][2] = cube[f_num][0][1];
         cube[f_num][0][1] = t2;
     }
-
     // rotate rounds
     
     int fix_num = s + 1;
@@ -97,7 +96,7 @@ void rotate(pair<int, int> face, int rot){
     for(int i = 0; i < 3; i++){
         if(cw > 0) cube[round[0]][i][fix_num] = temp[!ox * 2 + (2 * ox - 1) * i];
         else cube[round[0]][fix_num][i] = temp[!ox * 2 + (2 * ox - 1) * i];
-    }    
+    }
 }
 
 int rton(char rot){
