@@ -10,6 +10,7 @@ int lab[50][50];
 int original[50][50];
 vector<pair<int, int>> virus;
 int activated[11];
+int num_empty = 0;
 
 int x_dir[4] = {-1, 0 , 1, 0};
 int y_dir[4] = {0, 1, 0, -1};
@@ -24,12 +25,12 @@ void reset_lab(){
 
 void bfs(){
     int x, y, nx, ny;
-    int max_num = 0;
+    int max_num = 2;
+    int num_zero = 0;
     queue<pair<int, int>> v;
     for(int i = 1; i <= M; i++) v.push(virus[activated[i]]);
 
     reset_lab();
-
     while(!v.empty()){
         x = v.front().first;
         y = v.front().second;
@@ -40,22 +41,17 @@ void bfs(){
             if(nx >= 0 && ny >= 0 && nx < N && ny < N){
                 if(lab[nx][ny] == 0 || lab[nx][ny] == 2){
                     v.push({nx, ny});
+                    if(!lab[nx][ny]){
+                        num_zero++;
+                        max_num = max(max_num, lab[x][y] + 1);
+                    }
                     lab[nx][ny] = lab[x][y] + 1;
                 }
             }
         }
     }
-    for(int i = 0; i < N; i++){
-        for(int j = 0; j < N; j++){
-            if(!lab[i][j]) return;
-            else {
-                if(original[i][j] == 2) lab[i][j] = 2;
-                max_num = max(max_num, lab[i][j]);
-            }
-        }
-    }
 
-    result = min(max_num - 2, result);
+    if(num_zero == num_empty) result = min(max_num - 2, result);    
     return;
 }
 
@@ -78,6 +74,7 @@ int main(){
         for(int j = 0; j < N; j++){
             cin >> lab[i][j];
             if(lab[i][j] == 2) virus.push_back({i, j});
+            else if(!lab[i][j]) num_empty++;
             original[i][j] = lab[i][j];
         }
     }
