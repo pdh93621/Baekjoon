@@ -5,18 +5,9 @@
 using namespace std;
 
 int N, M, T;
-
 int circle[51][51];
 int r_dir[4] = {1, 0, -1, 0};
 int x_dir[4] = {0, 1, 0, 0};
-
-void look_circle(){
-    cout << "\n";
-    for(int i = 1; i <= N; i++){
-        for(int j = 1; j <= M; j++) cout << circle[i][j] << " ";
-        cout << "\n";
-    }
-}
 
 void rotation(int num, int d){
     int temp;
@@ -49,38 +40,31 @@ void k_rot(int x, int d, int k){
 
 bool elimination(int r, int x, bool visited[][51]){
     if(visited[r][x] || !circle[r][x]) return false;
-    int nr, nx;
-    int r1 = r;
-    int x1 = x;    
-    queue<pair<int, int>> zero_list;    
-    queue<pair<int, int>> q;
-    q.push({r, x});
-    visited[r][x] = true;
     
+    int tr, tx;
+    int nr, nx;
+    int n = circle[r][x];
+    bool p = false;
+    queue<pair<int, int>> q;        
+    q.push({r,x});
+
     while(!q.empty()){
-        r = q.front().first;
-        x = q.front().second;
+        tr = q.front().first;
+        tx = q.front().second;
         q.pop();
+        if(p) circle[tr][tx] = 0;
         for(int i = 0; i < 4; i++){
-            nr = r + r_dir[i];
-            nx = (x + x_dir[i]) % M;
-            if(nr > 0 && nr <= M && !visited[nr][nx] && circle[r][x] == circle[nr][nx]){
-                zero_list.push({nr, nx});
+            nr = tr + r_dir[i];
+            nx = (tx + x_dir[i] - 1) % M + 1;
+            if(nr > 0 && nr <= N && !visited[nr][nx] && circle[nr][nx] == n){
                 q.push({nr, nx});
+                p = true;
                 visited[nr][nx] = true;
             }
         }
     }
-
-    if(zero_list.empty()) return false;
-
-    circle[r1][x1] = 0;
-    while(!zero_list.empty()){
-        circle[zero_list.front().first][zero_list.front().second] = 0;
-        //cout << zero_list.front().first << " " << zero_list.front().second << endl; 
-        zero_list.pop();
-    }
-
+    if(!p) return false;
+    circle[r][x] = 0;
     return true;
 }
 
@@ -103,6 +87,7 @@ void change_all(){
     double avg = (double)s.first / s.second;
     for(int i = 1; i <= N; i++){
         for(int j = 1; j <= M; j++){
+            if(!circle[i][j]) continue;
             if(circle[i][j] > avg) circle[i][j]--;
             else if(circle[i][j] < avg) circle[i][j]++;
         }
@@ -139,7 +124,6 @@ int main(){
     }
 
     cout << get_sum().first << endl;
-    look_circle();
 
     return 0;
 }
