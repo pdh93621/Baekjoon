@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stack>
+#include <queue>
 #define Green 0
 #define Blue 1
 
@@ -10,7 +10,7 @@ int score;
 
 int num_pile(int j, int color){
     int num = 0;
-    while(!GB[color][num][j] && num < 6) num++;
+    while(num < 6 && !GB[color][num][j]) num++;
     return --num;
 }
 
@@ -62,37 +62,30 @@ void R2GB(int t, int x, int y, bool color){
 }
 
 void get_score(bool color){
-    int i = 5;
-    //전부 1인지 조사
-    bool a;
-    //전부 0인지 조사
-    bool b;
-    stack<int> s;
-    do {
-        a = 1;
-        b = 0;
-
-        for(int j = 0; j < 4; j++){
-            a *= GB[color][i][j];
-            b += GB[color][i][j];  
-        }
-        if(!b) break;
-
-        if(a) {
-            s.push(i);
-            score++;
+    int a;
+    queue<int> q;
+    int temp;
+    //가득찬 행 제거
+    for(int i = 2; i < 6; i++){
+        a = 0;
+        for(int j = 0; j < 4; j++) a += GB[color][i][j];
+        if(a == 4){
             for(int j = 0; j < 4; j++) GB[color][i][j] = 0;
+            score++;
+            q.push(i);
         }
-        else {
-            if(s.empty()) continue;
-            for(int j = 0; j < 4; j++){
-                GB[color][s.top()][j] = GB[color][i][j];
-                GB[color][i][j] = 0;
-            }            
-            s.pop();
-        }
+    }
 
-    } while(--i >= 0);
+    while(!q.empty()){
+        temp = q.front();
+        q.pop();
+        for(int i = temp - 1; i >= 0; i--){
+            for(int j = 0; j < 4; j++){
+                GB[color][i + 1][j] = GB[color][i][j];
+                GB[color][i][j] = 0;
+            }
+        }
+    }
 }
 
 void cut_down(bool color){
@@ -123,6 +116,7 @@ void cut_down(bool color){
 int main(){
     int N;
     int t, x, y;
+    int k;
 
     cin >> N;
     
@@ -137,7 +131,7 @@ int main(){
         //look_GB();
     }
 
-    cout << score << endl;
-    cout << num_block() << endl;
+    k = num_block();
+    cout << score << '\n' << k << '\n';
     return 0;
 }
