@@ -11,7 +11,7 @@ int L;
 int board[101][101];
 int x_dir[4] = {0, -1, 0, 1};
 int y_dir[4] = {1, 0, -1, 0};
-int current_dir = 0;
+int dir = 0;
 queue<pair<int, char>> dirs;
 queue<pair<int, int>> snake;
 pair<int, int> head = make_pair(1, 1);
@@ -34,8 +34,8 @@ bool gogo(int t, char d){
         time++;
         // cout << time - 1 << "\n";
         // look_snake();
-        head.first += x_dir[current_dir];
-        head.second += y_dir[current_dir];
+        head.first += x_dir[dir];
+        head.second += y_dir[dir];
         if(head.first < 1 || head.first > N || head.second < 1 || head.second > N || board[head.first][head.second] == 2) return false;
         snake.push(make_pair(head.first, head.second));
         
@@ -48,8 +48,8 @@ bool gogo(int t, char d){
         board[head.first][head.second] = 2;        
     }
 
-    if(d == 'L') current_dir = (current_dir + 1) % 4;
-    else current_dir = (current_dir + 3) % 4;    
+    if(d == 'L') dir = (dir + 1) % 4;
+    else dir = (dir + 3) % 4;    
 
     return true;
 }

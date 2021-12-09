@@ -14,7 +14,7 @@ int main(){
     while(n--){
         int temp;
         cin >> temp;
-
+        
         while(now <= temp){
             seq.push(now++);
             answer += '+';
