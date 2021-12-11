@@ -4,25 +4,20 @@
 using namespace std;
 typedef struct{
     int x, y, d;
+    bool live;
 }info;
 
-info ori_info[17];
 info fish[17];
 info shark;
-
-int ori_space[4][4];
 int space[4][4];
 
 int x_dir[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
 int y_dir[8] = {0, -1, -1, -1, 0, 1, 1, 1};
 
-int behave[15];
-
-int result;
-
-void look_behave(){
-    for(int i = 0; i < 15; i++) cout << behave[i] << " ";
-    cout << "\n";
+void reset_space(){
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++) space[i][j] = 0;
+    }
 }
 
 void look_space(){
@@ -31,13 +26,7 @@ void look_space(){
         for(int j = 0; j < 4; j++) cout << space[i][j] << " ";
         cout << "\n";
     }
-}
 
-void reset_info(){
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++) space[i][j] = ori_space[i][j];
-    }
-    for(int i = 1; i < 17; i++) fish[i] = ori_info[i];
 }
 
 int find_dir(info f){
@@ -83,40 +72,39 @@ int move_shark(int m){
         space[shark.x][shark.y] = 0;
         num = space[nx][ny];
         shark = fish[num];
-        fish[num].x = -1;
+        fish[num].live = false;
         space[nx][ny] = -1;
         return num;
     }
     else return -1;
 }
 
-void integrate(int b){
-    if(b == 15){
-        int eat = space[0][0];
-        int eaten;
-        int m = 0;
-        shark = fish[eat];
-        fish[eat].x = -1;
-        space[0][0] = -1;
+int integrate(){
+    //기존 데이터 저장
+    info temp_shark = shark;
+    info temp_fish[17];
+    for(int i = 1; i <= 16; i++) temp_fish[i] = fish[i];
 
-        while(m < 15) {
-            for(int i = 1; i <= 16; i++) if(fish[i].x >= 0) move_fish(i);            
-            eaten = move_shark(behave[m]);
-            if(eaten < 0) break;
-            eat += eaten;
-            m++;
-        }
+    int temp;
+    int result = 0;
+    for(int i = 1; i <= 16; i++) if(fish[i].live) move_fish(i);
+
+    for(int i = 1; i <= 3; i++){
+        temp = move_shark(i);
+        if(temp < 0) continue;
+        result = max(temp + integrate(), result);
         
-        look_behave();
-        result = max(eat, result);
-        reset_info();
-    }
-    else {
-        for(int i = 1; i <= 3; i++){
-            behave[b] = i;
-            integrate(b + 1);
+        //초기화
+        reset_space();
+        for(int i = 1; i <= 16; i++){
+            fish[i] = temp_fish[i];
+            shark = temp_shark;
+            if(fish[i].live) space[fish[i].x][fish[i].y] = i;
+            space[shark.x][shark.y] = -1;
         }
     }
+
+    return result;
 }
 
 int main(){
@@ -125,15 +113,16 @@ int main(){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             cin >> num >> dir;
-            fish[num] = {i, j, dir - 1};
-            ori_info[num] = fish[num];
+            fish[num] = {i, j, dir - 1, true};
             space[i][j] = num;
-            ori_space[i][j] = num;
         }
     }
-    
-    integrate(0);
-    cout << result << endl;
-    
+
+    num = space[0][0];
+    shark = fish[num];
+    fish[num].live = false;
+    space[0][0] = -1;
+
+    cout << num + integrate() << endl;
     return 0;
 }
