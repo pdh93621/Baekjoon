@@ -4,14 +4,10 @@
 
 using namespace std; 
 
-typedef struct{
-    int i, j;
-}info;
+int n[4][4];
 
 int main(){
-    
-    info k = {1, 2};
-    info p = k;
-    cout << p.i << p.j << endl;
+
+    n[0] = {1, 1, 1, 1};
     return 0;
 }
