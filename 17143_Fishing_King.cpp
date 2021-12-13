@@ -29,9 +29,21 @@ void look_acua(int acua[][100], int catched){
 
 pivot get_pivot(int r, int c, int s, int d){
     int temp = r_dir[d] + c_dir[d];
+    int rc = r * abs(r_dir[d]) + c * abs(c_dir[d]); 
+    int RC = R * abs(r_dir[d]) + C * abs(c_dir[d]) - 1;
+    int diff = rc + temp * s;
+    if(diff < 0) {
+        diff *= -1;
+        d = 3 - d;
+    }
     
-    
-    return {r, c, d};
+    if((diff / RC) % 2) {
+        diff = RC - (diff % RC);
+        d = 3 - d;
+    } 
+    else diff %= RC;
+
+    return {abs(r_dir[d]) * diff + abs(c_dir[d]) * r, abs(c_dir[d]) * diff + abs(r_dir[d]) * c, d};
 }
 
 void action(int column){
