@@ -43,7 +43,7 @@ void look_fires(){
     else{    
         int fz = fires.size();
         while(fz--){
-            cout << fires.front().rc.r << fires.front().rc.c << " ";
+            cout << fires.front().rc.r << fires.front().rc.c << fires.front().st.m << fires.front().st.s << fires.front().st.d << " ";
             fires.push(fires.front());
             fires.pop();
         }
@@ -58,7 +58,7 @@ int penet(int n){
 }
 
 info move_fire(info fire){
-    fire.rc = {penet(fire.rc.r + fire.st.s * x_dir[fire.st.d]), penet(fire.rc.c + fire.st.s * y_dir[fire.st.d])};
+    fire.rc = {penet(fire.rc.r + (fire.st.s % N) * x_dir[fire.st.d]), penet(fire.rc.c + (fire.st.s % N) * y_dir[fire.st.d])};
     return fire;
 }
 
@@ -133,13 +133,13 @@ int main(){
     
     for(int i = 0; i < M; i++){
         cin >> r >> c >> m >> s >> d;
-        fires.push({r - 1, c - 1, m, s % N, d});
+        fires.push({r - 1, c - 1, m, s, d});
     }
 
     while(K--) move_all();
 
     while(!fires.empty()){
-       total += fires.front().st.m;
+        total += fires.front().st.m;
         fires.pop();
     }
 
