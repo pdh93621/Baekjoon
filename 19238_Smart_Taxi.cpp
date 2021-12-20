@@ -5,13 +5,13 @@
 using namespace std;
 
 typedef struct{
-    int x, y;
+    int x, y, ori_x, ori_y;
+    bool visited;
 } info;
 
 int N, M;
 int fuel;
 int x, y;
-
 int map[20][20];
 info C[401];
 
@@ -28,13 +28,20 @@ void look_map(){
     cout << "\n";
 }
 
-void reset_map(){
+void reset_map(bool k){
     int tx, ty;
     while(!visits.empty()){
         tx = visits.front().first;
         ty = visits.front().second;
         map[tx][ty] = 0;
         visits.pop();
+    }
+    
+    if(!k) return;
+
+    for(int i = 1; i <= M; i++){
+        if(C[i].visited) continue;
+        map[C[i].ori_x][C[i].ori_y] = -i; 
     }
 }
 
@@ -86,6 +93,7 @@ int go_target(){
     int nx, ny;
     int tx, ty;
     int t = -map[x][y];
+    C[t].visited = true;
     queue<pair<int, int>> q;
     q.push({x, y});
     visits.push({x, y});
@@ -99,12 +107,12 @@ int go_target(){
         for(int i = 0; i < 4; i++){
             nx = tx + x_dir[i];
             ny = ty + y_dir[i];
-            if(nx >= 0 && ny >= 0 && nx < N && ny < N && !map[nx][ny]) {
+            if(nx >= 0 && ny >= 0 && nx < N && ny < N && map[nx][ny] <= 0) {
                 if(nx == C[t].x && ny == C[t].y) {
                     if(map[tx][ty] > fuel) return -1;
                     else {
                         x = nx;
-                        y = ny;
+                        y = ny;                        
                         return map[tx][ty];
                     }
                 }
@@ -122,6 +130,7 @@ int main(){
     int cx, cy, tx, ty;
     bool is_poss;
     cin >> N >> M >> fuel;
+    int m = M;
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
             cin >> map[i][j];
@@ -134,19 +143,19 @@ int main(){
     y--;
     for(int i = 1; i <= M; i++){
         cin >> cx >> cy >> tx >> ty;
-        C[i] = {tx - 1, ty - 1};
+        C[i] = {tx - 1, ty - 1, cx - 1, cy - 1, false};
         map[cx - 1][cy - 1] = -i;
     }
 
-    while(M--) {
+    while(m--) {
         f1 = find_c();
         if(f1 >= 0) {
             fuel -= f1;
-            reset_map();
+            reset_map(0);
             f2 = go_target();
             if(f2 >= 0) {
                 fuel += f2;
-                reset_map();
+                reset_map(1);
             }
             else {
                 fuel = -1;
@@ -158,6 +167,7 @@ int main(){
             break;
         }
     }
+    //look_map();
 
     cout << fuel << endl;
 
