@@ -8,6 +8,6 @@ int n[4][4];
 
 int main(){
 
-    n[0] = {1, 1, 1, 1};
+    cout << (-16)/ 5 << endl;
     return 0;
 }
