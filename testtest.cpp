@@ -7,7 +7,10 @@ using namespace std;
 int n[4][4];
 
 int main(){
-
-    cout << (-16)/ 5 << endl;
+    int h = 1;
+    int c = 0;
+    h += !(h > c);
+    c += (h > c);
+    cout << h << " " << c << endl;
     return 0;
 }
