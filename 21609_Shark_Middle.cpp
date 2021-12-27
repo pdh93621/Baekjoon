@@ -63,7 +63,7 @@ info bfs(int x, int y, bool visited[][20]) {
 }
 
 bool choose_group() {
-    info group = {-1, -1, 0, 100};
+    info group = {-1, -1, 0, 0};
     info temp;
     bool visited[20][20];
     for(int i = 0; i < N; i++) {
