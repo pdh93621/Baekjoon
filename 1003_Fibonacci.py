@@ -15,5 +15,6 @@ for n in range(2,N+1):
 for t in test:
     print(num_zero[t], num_one[t])
 
+print(T)
 print(num_zero)
 print(num_one) 
