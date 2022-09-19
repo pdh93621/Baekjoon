@@ -2,7 +2,7 @@ N, M = list(map(int, input().split()))
 
 trees = list(map(int, input().split()))
 
-start = min(trees)
+start = 0
 end = max(trees)
 result = 0
 

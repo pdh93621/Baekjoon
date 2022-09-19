@@ -56,7 +56,6 @@ def dfs(n, dist):
             dfs(m, dist + d)
             visited[m] = False
 
-
 n = 1
 for x in range(N):
     for y in range(M):
