@@ -9,7 +9,6 @@ dx = [0, 0, 1, -1]
 dy = [1, -1, 0, 0]
 bridge = []
 result = 1000000
-visit = [False for _ in range(7)]
 dfs_map = []
 
 def find_island(n, x, y):
@@ -47,14 +46,23 @@ def make_vb():
                 start = n
         start = -1
 
-def dfs(n, dist):
-    visited[n] = True
+def prim(n):
+    result = 0
+    visit = [False for _ in range(7)]
+    visit[1] = 1
+    hq = dfs_map[1]
+    heapq.heapify(hq)
 
-    for dm in dfs_map[n]:
-        d, m = dm
-        if not visited[m]:
-            dfs(m, dist + d)
-            visited[m] = False
+    while hq:
+        d, start, end = heapq.heappop(hq)
+
+        if not visit[end]:
+            visit[end] = True
+            result += d
+            for i in dfs_map[end]:
+                heapq.heappush(hq, i)
+
+    return (sum(visit) == n) * result - (sum(visit) != n)
 
 n = 1
 for x in range(N):
@@ -70,5 +78,7 @@ bridge = list(set(bridge))
 dfs_map = [[] for _ in range(n)]
 for b in bridge:
     l, x, y = b
-    dfs_map[x].append((l, y))
-    dfs_map[y].append((l, x))
+    dfs_map[x].append((l, x, y))
+    dfs_map[y].append((l, y, x))
+
+print(prim(n - 1))
